@@ -69,15 +69,15 @@ module Hostess
       end
       def vhost_config
         template = case @options.type
-        when :ssl_reverse_proxy
-          Template::SSLReverseProxy.erb(@options)
-        when :reverse_proxy
-          Template::ReverseProxy.erb(@options)
-        when :directory
-          Template::Directory.erb(@options)
-        else
-          raise OptionsError, "Could not determine VirtualHost type"
-        end
+          when :ssl_reverse_proxy
+            Template::SSLReverseProxy.erb(@options)
+          when :reverse_proxy
+            Template::ReverseProxy.erb(@options)
+          when :directory
+            Template::Directory.erb(@options)
+          else
+            raise OptionsError, "Could not determine VirtualHost type"
+          end
         ERB.new(template).result(binding)
       end
       def config_filename
