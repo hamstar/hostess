@@ -1,5 +1,7 @@
 # Hostess
 
+**This code has been modified from the original and is as yet untested.**
+
 A simple tool for adding local directories as virtual hosts in a local apache installation. It probably only works well on a Mac, but we're scratching our own itch here.
 
 ## Usage
