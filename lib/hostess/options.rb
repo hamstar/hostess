@@ -1,8 +1,9 @@
 module Hostess
   class Options
-    attr_reader :action, :domain, :directory, :path, :url
+    attr_reader :action, :domain, :directory, :path, :url, :type
     def initialize(action=nil, domain=nil, directory=nil, path=nil)
       @action, @domain, @directory, @url, @path = action, domain, directory, directory, path
+      @type = virtual_host_type
     end
     def directory
       File.expand_path(@directory) if @directory
@@ -29,6 +30,16 @@ module Hostess
       valid_help? or 
       valid_create_ssl_reverse_proxy? or 
       valid_create_reverse_proxy?
+    end
+    def virtual_host_type
+      case
+      when valid_create_reverse_proxy?
+        :reverse_proxy
+      when valid_create_ssl_reverse_proxy?
+        :ssl_reverse_proxy
+      when valid_create_directory?
+        :directory
+      end
     end
     private
       def valid_create_reverse_proxy?

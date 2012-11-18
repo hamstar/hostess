@@ -3,11 +3,17 @@ require 'fileutils'
 require 'pathname'
 require 'tempfile'
 
+require 'template/reverse_proxy'
+require 'template/directory'
+require 'template/ssl_reverse_proxy'
+
 module Hostess
   
   autoload :Options,     'hostess/options'
   autoload :VirtualHost, 'hostess/virtual_host'
   
+  class OptionsError < StandardError; end
+
   class << self
     
     attr_writer :apache_config_dir, :apache_log_dir
