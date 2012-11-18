@@ -2,7 +2,7 @@ module Hostess
   module Template
     class ReverseProxy
       def erb(options)
-        domain, path, url = options.domain, options.path, options.directory
+        domain, path, url = options.domain, options.path, options.url
 <<-EOT
 <VirtualHost *:80>
   ServerName <%= domain %>
