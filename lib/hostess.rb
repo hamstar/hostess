@@ -41,6 +41,10 @@ module Hostess
     def vhosts_log_dir
       File.join(apache_log_dir, "#{script_name}_vhosts")
     end
+
+    def hosts_filename
+      File.join('/', 'etc', 'hosts')
+    end
     
     def disable_sudo!
       @disable_sudo = true

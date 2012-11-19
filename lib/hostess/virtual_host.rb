@@ -32,13 +32,11 @@ module Hostess
       def dscl_works?
         `sw_vers -productVersion`.strip < '10.7'
       end
-      def hosts_filename
-        File.join('/', 'etc', 'hosts')
-      end
       def create_dns_entry
         if dscl_works?
           run "dscl localhost -create /Local/Default/Hosts/#{@options.domain} IPAddress 127.0.0.1"
         else
+          hosts_filename = Hostess.hosts_filename
           run "echo '127.0.0.1 #{@options.domain}' >> #{hosts_filename}"
         end
       end
@@ -46,6 +44,7 @@ module Hostess
         if dscl_works?
           run "dscl localhost -delete /Local/Default/Hosts/#{@options.domain}"
         else
+          hosts_filename = Hostess.hosts_filename
           run "perl -pi -e 's/127.0.0.1 #{@options.domain}\\n//g' #{hosts_filename}"
         end
       end
