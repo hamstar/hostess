@@ -21,7 +21,7 @@ module Hostess
       restart_apache
     end
     def log
-      log_file = File.join(Hostess.apache_log_directory, '#{@options.level}_log')
+      log_file = File.join(vhost_log_directory, '#{@options.level}_log')
       system "less #{log_file}"
     end
     def list
