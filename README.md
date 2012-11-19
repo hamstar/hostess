@@ -2,7 +2,27 @@
 
 **This code has been modified from the original and is as yet untested and should be considered beta code.**
 
-A simple tool for adding local directories as virtual hosts in a local apache installation. It probably only works well on a Mac, but we're scratching our own itch here.
+A simple tool for adding local directories as virtual hosts in a local apache installation.
+
+## Compatibility
+
+Hostess runs on both MacOS and Debian, however a few differences in file locations are noted.
+
+### MacOS
+
+When run on MacOS the following locations are used (example: my.site.com):
+
+* `/etc/apache2/hostess_vhosts/my.site.com.conf` - the config file
+* `/var/log/apache2/hostess_vhosts/my.site.com/error_log` - a log file
+
+### Debian
+
+When run on Debian the standard locations are used:
+
+* `/etc/apache2/sites-available/my.site.com.conf` - the config file
+* `/var/log/apache2/my.site.com/error_log` - a log file
+
+**Hostess will manage all your virtual hosts on a debian system** so be careful with that delete action.
 
 ## Usage
 
@@ -42,6 +62,4 @@ For viewing log files you can use the log command: `hostess log domain level`.
 
 The above commands make it easier to view virtual host logs.  Omitting the level arguments defaults to showing the error log.  Otherwise you can use rewrite/r, error/e or access/a.  Easy!
 
-## TODO
 
-* Get this working on debian.
