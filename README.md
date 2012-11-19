@@ -27,12 +27,13 @@ When run on Debian the standard locations are used:
 ## Usage
 
     $ hostess help
-    Usage: hostess <action> <domain> <directory|url> [path]
+    Usage: hostess <action> <domain> <directory|url|level> [path]
     hostess create domain directory - create a new virtual host
     hostess create domain url path  - create a new reverse proxy virtual host
     hostess delete domain           - delete a virtual host
-    hostess list                    - list #{Hostess.script_name} virtual hosts
+    hostess log domain level        - show log file for level (error,access,rewrite) of domain
     hostess show domain             - dump the virtual host config
+    hostess list                    - list hostess virtual hosts
     hostess help                    - this info
 
 ### Directory virtual hosts
