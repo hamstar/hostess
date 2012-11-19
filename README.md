@@ -32,6 +32,7 @@ When run on Debian the standard locations are used:
     hostess create domain url path  - create a new reverse proxy virtual host
     hostess delete domain           - delete a virtual host
     hostess list                    - list #{Hostess.script_name} virtual hosts
+    hostess show domain             - dump the virtual host config
     hostess help                    - this info
 
 ### Directory virtual hosts
@@ -62,4 +63,27 @@ For viewing log files you can use the log command: `hostess log domain level`.
 
 The above commands make it easier to view virtual host logs.  Omitting the level arguments defaults to showing the error log.  Otherwise you can use rewrite/r, error/e or access/a.  Easy!
 
+### Show virtual host configurations
 
+This will dump the configuration of the virtual host to the console.  This could be useful for troubleshooting and testing.
+
+    $ hostess show my.site.com
+    <VirtualHost *:80>
+	  ServerName my.site.com
+	  DocumentRoot "/var/www/my.site.com"
+	  <Directory "/var/www/my.site.com">
+	    Options FollowSymLinks
+	    AllowOverride All
+	    allow from all
+	  </Directory>
+	  <DirectoryMatch "^/.*/\.svn/">
+	    ErrorDocument 403 /404.html
+	    Order allow,deny
+	    Deny from all
+	    Satisfy All
+	  </DirectoryMatch>
+	  ErrorLog /var/log/apache2/hostess_vhosts/my.site.com/error_log
+	  CustomLog /var/log/apache2/hostess_vhosts/my.site.com/access_log common
+	  #RewriteLogLevel 3
+	  RewriteLog /var/log/apache2/hostess_vhosts/my.site.com/rewrite_log
+	</VirtualHost>

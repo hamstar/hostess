@@ -46,7 +46,8 @@ module Hostess
       valid_help? or 
       valid_create_ssl_reverse_proxy? or 
       valid_create_reverse_proxy? or
-      valid_log?
+      valid_log? or
+      valid_show?
     end
     def virtual_host_type
       case
@@ -77,6 +78,9 @@ module Hostess
       def valid_list?
         @action == 'list'
       end
+      def valid_show?
+        @action == "show" and @domain
+      end
       def valid_help?
         @action == 'help'
       end
@@ -87,6 +91,7 @@ module Hostess
     #{Hostess.script_name} create domain url path  - create a new reverse proxy virtual host
     #{Hostess.script_name} delete domain           - delete a virtual host
     #{Hostess.script_name} log domain level        - show log file of level (error,access,rewrite) for domain
+    #{Hostess.script_name} show domain             - dump the virtual host config
     #{Hostess.script_name} list                    - list #{Hostess.script_name} virtual hosts
     #{Hostess.script_name} help                    - this info
 EndBanner

@@ -29,6 +29,9 @@ module Hostess
         puts File.basename(config_file, '.conf')
       end
     end
+    def show
+      puts File.read(config_filename)
+    end
     def help
       @options.display_banner_and_return
     end
