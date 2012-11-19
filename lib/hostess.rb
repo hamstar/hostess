@@ -31,15 +31,19 @@ module Hostess
     end
     
     def vhosts_dir
-      File.join(apache_config_dir, "#{script_name}_vhosts")
+      on_debian? ?
+        File.join('/', apache_config_dir, "sites-available") :
+        File.join(apache_config_dir, "#{script_name}_vhosts")
     end
     
     def apache_log_dir
       @apache_log_dir || File.join('/', 'var', 'log', 'apache2')
     end
     
-    def vhosts_log_dir
-      File.join(apache_log_dir, "#{script_name}_vhosts")
+    def vhosts_log_dir(domain=nil)
+      on_debian? ?
+        File.join(apache_log_dir, domain) :
+        File.join(apache_log_dir, "#{script_name}_vhosts")
     end
 
     def hosts_filename
@@ -54,6 +58,10 @@ module Hostess
       @disable_sudo ? false : true
     end
     
+    def on_debian?
+      File.directory? File.join('/', apache_config_dir, "sites-available")
+    end
+
   end
   
 end

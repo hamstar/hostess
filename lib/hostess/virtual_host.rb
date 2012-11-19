@@ -9,7 +9,7 @@ module Hostess
     def create
       setup_apache_config
       create_vhost_directory
-      create_apache_log_directory
+      create_vhost_log_directory
       create_dns_entry
       create_vhost
       restart_apache
@@ -17,7 +17,7 @@ module Hostess
     def delete
       delete_dns_entry
       delete_vhost
-      delete_apache_log_directory
+      delete_vhost_log_directory
       restart_apache
     end
     def log
@@ -61,14 +61,14 @@ module Hostess
       def delete_vhost
         run "rm #{config_filename}"
       end
-      def apache_log_directory
-        File.join(Hostess.vhosts_log_dir, @options.domain)
+      def vhost_log_directory
+        Hostess.vhosts_log_dir @options.domain
       end
-      def create_apache_log_directory
-        run "mkdir -p #{apache_log_directory}"
+      def create_vhost_log_directory
+        run "mkdir -p #{vhost_log_directory}" unless File.directory? vhost_log_directory
       end
-      def delete_apache_log_directory
-        run "rm -r #{apache_log_directory}"
+      def delete_vhost_log_directory
+        run "rm -r #{vhost_log_directory}" if File.directory? vhost_log_directory
       end
       def vhost_config
         template = case @options.type
@@ -96,7 +96,7 @@ module Hostess
         end
       end
       def create_vhost_directory
-        run "mkdir -p #{Hostess.vhosts_dir}"
+        run "mkdir -p #{Hostess.vhosts_dir}" unless File.directory? Hostess.vhosts_dir
       end
       def restart_apache
         run "apachectl restart"
