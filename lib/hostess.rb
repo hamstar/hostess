@@ -3,9 +3,9 @@ require 'fileutils'
 require 'pathname'
 require 'tempfile'
 
-require 'template/reverse_proxy'
-require 'template/directory'
-require 'template/ssl_reverse_proxy'
+require 'hostess/templates/reverse_proxy'
+require 'hostess/templates/directory'
+require 'hostess/templates/ssl_reverse_proxy'
 
 module Hostess
   
