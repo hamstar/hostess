@@ -1,8 +1,8 @@
 module Hostess
   class Options
-    attr_reader :action, :domain, :directory, :path, :url, :type
+    attr_reader :action, :domain, :directory, :path, :url, :type, :level
     def initialize(action=nil, domain=nil, directory=nil, path=nil)
-      @action, @domain, @directory, @url, @path = action, domain, directory, directory, path
+      @action, @domain, @directory, @url, @level, @path = action, domain, directory, directory, directory, path
       @type = virtual_host_type
     end
     def directory
@@ -19,6 +19,22 @@ module Hostess
       @path = "/#{@path}" if @path !~ /^\//
       @path =~ /^\//
     end
+    def level
+      @level ||= "error"
+      
+      # allow single letter
+      case @level
+      when "e"
+        @level = "error"
+      when "a"
+        @level = "access"
+      when "r"
+        @level = "rewrite"
+      end
+
+      @level =~ /access|error|rewrite/
+    end
+
     def display_banner_and_return
       puts banner
       exit
@@ -29,7 +45,8 @@ module Hostess
       valid_list? or 
       valid_help? or 
       valid_create_ssl_reverse_proxy? or 
-      valid_create_reverse_proxy?
+      valid_create_reverse_proxy? or
+      valid_log?
     end
     def virtual_host_type
       case
@@ -54,6 +71,9 @@ module Hostess
       def valid_delete?
         @action == 'delete' and @domain
       end
+      def valid_log?
+        @action == 'log' and @domain and level
+      end
       def valid_list?
         @action == 'list'
       end
@@ -62,10 +82,11 @@ module Hostess
       end
       def banner
 <<EndBanner
-  Usage: #{Hostess.script_name} <action> <domain> <directory|url> [path]
+  Usage: #{Hostess.script_name} <action> [<domain> <directory|url|level> [path]]
     #{Hostess.script_name} create domain directory - create a new virtual host
     #{Hostess.script_name} create domain url path  - create a new reverse proxy virtual host
     #{Hostess.script_name} delete domain           - delete a virtual host
+    #{Hostess.script_name} log domain level        - show log file of level (error,access,rewrite) for domain
     #{Hostess.script_name} list                    - list #{Hostess.script_name} virtual hosts
     #{Hostess.script_name} help                    - this info
 EndBanner

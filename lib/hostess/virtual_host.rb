@@ -20,6 +20,10 @@ module Hostess
       delete_apache_log_directory
       restart_apache
     end
+    def log
+      log_file = File.join(Hostess.apache_log_directory, '#{@options.level}_log')
+      system "less #{log_file}"
+    end
     def list
       Dir[File.join(Hostess.vhosts_dir, '*.conf')].each do |config_file|
         puts File.basename(config_file, '.conf')
